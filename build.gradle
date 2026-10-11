@@ -4,7 +4,6 @@ plugins {
     id 'idea'
     id 'maven-publish'
     alias libs.plugins.modDevGradle
-    alias libs.plugins.spotless
     alias libs.plugins.lombok
 }
 
@@ -69,7 +68,7 @@ apply from: "$rootDir/gradle/scripts/repositories.gradle"
 apply from: "$rootDir/dependencies.gradle"
 apply from: "$rootDir/gradle/scripts/resources.gradle"
 apply from: "$rootDir/gradle/scripts/publishing.gradle"
-apply from: "$rootDir/gradle/scripts/spotless.gradle"
+
 
 
 tasks.withType(JavaCompile).configureEach {
@@ -81,3 +80,22 @@ tasks.withType(JavaCompile).configureEach {
 lombok {
     version = "1.18.46"
 }
+
+tasks.named('jar', Jar) {
+ archiveFileName = 'mekmm-26.1.2-2.0.0-port1-atm11-0.9.0.jar'
+ from('LICENSE') { into 'META-INF'; rename { 'LICENSE-MoreMachine' } }
+}
+
+if (providers.gradleProperty('moreMachineSmoke').isPresent()) {
+ sourceSets.test.compileClasspath += sourceSets.main.compileClasspath
+ neoForge.runs.server.systemProperty 'port.moreMachineSmoke', 'true'
+}
+tasks.named('downloadAssets') {
+ javaExecutable.set(javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(25) }.map { it.executablePath.asFile.absolutePath })
+}
+
+if (providers.gradleProperty('clientIntegration').isPresent()) {
+ neoForge.runs.configureEach { systemProperty 'port.clientIntegration', 'true' }
+ neoForge.runs.client.programArguments.addAll '--quickPlayMultiplayer', '127.0.0.1:25567'
+}
+tasks.withType(Test).configureEach { failOnNoDiscoveredTests = false }

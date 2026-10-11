@@ -243,7 +243,7 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
             // 传输物品
             transportItems();
         }
-        try (Transaction transaction = Transaction.openRoot()) {
+        try (Transaction transaction = Transaction.open(Transaction.getCurrentOpenedTransaction())) {
             // 传输热量
             HeatTransfer loss = simulate(transaction);
             // 如果有无线交换热量缓存时要加上无线交换的热量损失
@@ -268,7 +268,7 @@ public class TileEntityWirelessTransmissionStation extends TileEntityConnectable
         for (BlockCapabilityCache<ResourceHandler<ItemResource>, @Nullable Direction> cache : itemCaches) {
             ResourceHandler<ItemResource> target = cache.getCapability();
             if (target != null) {
-                try (Transaction transaction = Transaction.openRoot()) {
+                try (Transaction transaction = Transaction.open(Transaction.getCurrentOpenedTransaction())) {
                     TransitRequest request = TransitRequest.definedItem(selfHandler, 1, itemsRate, Finder.ANY, transaction);
                     if (request.isEmpty()) {
                         continue;

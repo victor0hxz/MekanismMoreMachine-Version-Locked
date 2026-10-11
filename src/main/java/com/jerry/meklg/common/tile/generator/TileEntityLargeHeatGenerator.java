@@ -131,7 +131,7 @@ public class TileEntityLargeHeatGenerator extends TileEntityMoreMachineGenerator
     @Override
     protected boolean onUpdateServer(ServerLevel level) {
         boolean sendUpdatePacket = super.onUpdateServer(level);
-        try (Transaction transaction = Transaction.openRoot()) {
+        try (Transaction transaction = Transaction.open(Transaction.getCurrentOpenedTransaction())) {
             energySlot.drainContainerIntoSlot(transaction);
             fuelSlot.fillOrBurn(transaction);
             long prev = getEnergyContainer().getAmountAsLong();

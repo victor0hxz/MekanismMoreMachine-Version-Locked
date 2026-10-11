@@ -206,7 +206,7 @@ public class TileEntitySolarHeatGenerator extends TileEntityMoreMachineGenerator
     @Override
     protected boolean onUpdateServer(net.minecraft.server.level.ServerLevel level) {
         boolean sendUpdatePacket = super.onUpdateServer(level);
-        try (Transaction transaction = Transaction.openRoot()) {
+        try (Transaction transaction = Transaction.open(Transaction.getCurrentOpenedTransaction())) {
             energySlot.drainContainerIntoSlot(transaction);
 
             long previousEnergy = getEnergyContainer().getAmountAsLong();

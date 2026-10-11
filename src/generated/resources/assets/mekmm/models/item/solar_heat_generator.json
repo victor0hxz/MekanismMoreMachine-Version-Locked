@@ -109,5 +109,8 @@
         0
       ]
     }
+  },
+  "textures": {
+    "particle": "mekanism:block/base/base_bottom"
   }
 }

@@ -125,7 +125,7 @@ public class TileEntityLargeWindGenerator extends TileEntityMoreMachineGenerator
         }
         setActive(canFunction() && currentMultiplier != 0L && !hasSameBlockNearby);
         if (currentMultiplier != 0L && canFunction() && !hasSameBlockNearby && getEnergyContainer().getNeededAsLong() > 0L) {
-            try (Transaction transaction = Transaction.openRoot()) {
+            try (Transaction transaction = Transaction.open(Transaction.getCurrentOpenedTransaction())) {
                 getEnergyContainer().insert(MathUtils.clampToInt(getCurrentGeneration()), transaction, AutomationType.INTERNAL);
                 transaction.commit();
             }

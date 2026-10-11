@@ -127,7 +127,7 @@ public class TileEntityAmbientGasCollector extends TileEntityMekanism {
         long clientEnergyUsed = 0L;
         if (canFunction() && (chemicalTank.isEmpty() || estimateIncrementAmount() <= chemicalTank.getNeededAsLong(ChemicalResource.EMPTY))) {
             int energyPerTick = energyContainer.getEnergyPerTick();
-            try (Transaction transaction = Transaction.openRoot()) {
+            try (Transaction transaction = Transaction.open(Transaction.getCurrentOpenedTransaction())) {
                 if (energyContainer.extract(energyPerTick, transaction, AutomationType.INTERNAL) == energyPerTick) {
                     operatingTicks++;
                     if (operatingTicks >= ticksRequired) {

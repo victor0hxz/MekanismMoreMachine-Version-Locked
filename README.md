@@ -1,3 +1,18 @@
+# Mekanism MoreMachine: Version Locked
+
+Community compatibility build for Minecraft 26.1.2, NeoForge and ATM11 0.9.0. Original mod by Lost Myself; original MIT license and credits preserved.
+
+This addon uses your installed Mekanism modules. It does not embed or replace them.
+
+Requires **Mekanism Version Locked 2.3 or later** for custom ingredient recipe matching. Verified with **Mekanism Extras 1.4.2-fix5** and Additions, Generators and Tools 1.0. Install matching builds on the server and clients.
+
+- [Mekanism Version Locked](https://github.com/victor0hxz/Mekanism-Version-Locked/releases/tag/version-locked-2.3)
+- [Mekanism Extras Version Locked](https://github.com/victor0hxz/MekanismExtras-Version-Locked)
+
+See [PORT-ATM11.md](PORT-ATM11.md) for build requirements and [CHANGELOG-2.0.0-port1.md](CHANGELOG-2.0.0-port1.md) for port changes.
+
+---
+
 # Mekanism:More Machine
 [![CurseForge Total Downloads][badge_curseforge]][curseforge]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[![Modrinth Total Downloads][badge_modrinth]][modrinth]
 

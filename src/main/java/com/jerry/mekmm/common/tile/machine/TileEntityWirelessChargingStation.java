@@ -197,7 +197,7 @@ public class TileEntityWirelessChargingStation extends TileEntityConfigurableMac
         }
         ItemResource originalResource = handler.getResource(slot);
         int count = handler.getAmountAsInt(slot);
-        try (Transaction transaction = Transaction.openRoot()) {
+        try (Transaction transaction = Transaction.open(Transaction.getCurrentOpenedTransaction())) {
             int charged = EnergyUtils.charge(energySource, ItemAccess.forHandlerIndex(handler, slot), Math.toIntExact(Math.min(Integer.MAX_VALUE, amount)), transaction);
             if (charged > 0 && handler.extract(slot, originalResource, count, transaction) == count &&
                     handler.insert(slot, ItemResource.of(stack), count, transaction) == count) {
@@ -216,7 +216,7 @@ public class TileEntityWirelessChargingStation extends TileEntityConfigurableMac
         if (energySource == null) {
             return amount;
         }
-        try (Transaction transaction = Transaction.openRoot()) {
+        try (Transaction transaction = Transaction.open(Transaction.getCurrentOpenedTransaction())) {
             int charged = EnergyUtils.charge(energySource, ItemAccess.forStack(stack), Math.toIntExact(Math.min(Integer.MAX_VALUE, amount)), transaction);
             if (charged > 0) {
                 transaction.commit();

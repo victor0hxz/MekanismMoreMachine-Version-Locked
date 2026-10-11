@@ -116,7 +116,7 @@ public class TileEntityLargeGasGenerator extends TileEntityMoreMachineGenerator 
             int energyDensity = cachedFuel.energyDensity();
             int maxEnergyThisTick = MathUtils.clampToInt((long) energyDensity * Math.min((long) Math.ceil(cachedFuel.maxBurnPerTick() * fullness), fuelTank.amountAsLong()));
             if (maxEnergyThisTick > 0) {
-                try (Transaction transaction = Transaction.openRoot()) {
+                try (Transaction transaction = Transaction.open(Transaction.getCurrentOpenedTransaction())) {
                     int inserted = getEnergyContainer().insert(maxEnergyThisTick, transaction, AutomationType.INTERNAL);
                     if (inserted > 0) {
                         int mbThisTick = Math.ceilDiv(inserted, energyDensity);

@@ -24,3 +24,9 @@ src/generated/resources/.cache/
 *.patch
 *.DS_Store
 
+
+.gradle-client/
+dependency-backups/
+entrega/
+*.log
+*.upstream
