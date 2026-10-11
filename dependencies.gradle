@@ -1,5 +1,6 @@
 dependencies {
+ implementation files("libs/Mekanism-Version-Locked-26.1.2-${mekanism_version_locked}.jar")
  compileOnly(libs.jetbrains.annotations)
  compileOnly(forge.distanthorizons)
- implementation files(fileTree('libs') { include '*.jar' })
+ implementation files(fileTree('libs') { include '*.jar'; exclude 'Mekanism-Version-Locked-*' })
 }
