@@ -37,7 +37,7 @@ public class PlantingRecipeSerializer {
         RecordCodecBuilder<BasicPlantingRecipe, Optional<ItemStackTemplate>> secondaryOutputField = ItemStackTemplate.CODEC.optionalFieldOf(SerializationConstants.SECONDARY_OUTPUT).forGetter(BasicPlantingRecipe::getSecondaryOutputRaw);
 
         MapCodec<BasicPlantingRecipe> codec = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                ItemStackIngredient.CODEC.fieldOf(SerializationConstants.ITEM_INPUT).forGetter(PlantingRecipe::getItemInput),
+                CompatibleItemIngredientCodec.CODEC.fieldOf(SerializationConstants.ITEM_INPUT).forGetter(PlantingRecipe::getItemInput),
                 IngredientCreatorAccess.chemicalStack().codec().fieldOf(SerializationConstants.CHEMICAL_INPUT).forGetter(PlantingRecipe::getChemicalInput),
                 SerializerHelper.oneRequired(secondaryOutputField, mainOutputFieldBase, BasicPlantingRecipe::getMainOutputRaw),
                 secondaryOutputField,

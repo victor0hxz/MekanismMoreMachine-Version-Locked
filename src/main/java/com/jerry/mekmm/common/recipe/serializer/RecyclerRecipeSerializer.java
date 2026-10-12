@@ -27,7 +27,7 @@ public class RecyclerRecipeSerializer {
     public static RecipeSerializer<BasicRecyclerRecipe> create(Function3<ItemStackIngredient, ItemStackTemplate, Double, BasicRecyclerRecipe> factory) {
         Codec<Double> chanceCodec = Codec.DOUBLE.validate(d -> d > 0 && d <= 1 ? DataResult.success(d) : DataResult.error(() -> "Expected chance to be greater than zero, and less than or equal to one. Found " + d));
         MapCodec<BasicRecyclerRecipe> codec = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                ItemStackIngredient.CODEC.fieldOf(SerializationConstants.INPUT).forGetter(RecyclerRecipe::getInput),
+                CompatibleItemIngredientCodec.CODEC.fieldOf(SerializationConstants.INPUT).forGetter(RecyclerRecipe::getInput),
                 ItemStackTemplate.CODEC.fieldOf(SerializationConstants.OUTPUT).forGetter(BasicRecyclerRecipe::getChanceOutputRaw),
                 chanceCodec.fieldOf("chance").forGetter(BasicRecyclerRecipe::getOutputChance)).apply(instance, factory));
         StreamCodec<RegistryFriendlyByteBuf, BasicRecyclerRecipe> streamCodec = StreamCodec.composite(

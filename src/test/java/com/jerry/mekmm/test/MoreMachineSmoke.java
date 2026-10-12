@@ -16,6 +16,22 @@ public class MoreMachineSmoke {
  @SubscribeEvent public static void start(ServerStartedEvent e){
   if(!Boolean.getBoolean("port.moreMachineSmoke"))return;
   try {
+   var ops=e.getServer().registryAccess().createSerializationContext(com.mojang.serialization.JsonOps.INSTANCE);
+   var codec=com.jerry.mekmm.common.recipe.serializer.CompatibleItemIngredientCodec.CODEC;
+   for(String json:new String[]{"{\"item\":\"minecraft:diamond\",\"count\":4}","{\"ingredient\":\"minecraft:diamond\",\"count\":4}"}) {
+    var ingredient=codec.parse(ops,com.google.gson.JsonParser.parseString(json)).getOrThrow();
+    check(ingredient.test(new net.minecraft.world.item.ItemStack(Items.DIAMOND,4)),"legacy and modern ingredient accept exact count");
+    check(!ingredient.test(new net.minecraft.world.item.ItemStack(Items.DIAMOND,3)),"ingredient preserves required count");
+    check(!ingredient.test(new net.minecraft.world.item.ItemStack(Items.DIRT,4)),"ingredient rejects wrong item");
+    check(codec.encodeStart(ops,ingredient).getOrThrow().getAsJsonObject().has("ingredient"),"ingredient writes modern format");
+   }
+   check(codec.parse(ops,com.google.gson.JsonParser.parseString("{\"item\":\"minecraft:diamond\"}")).getOrThrow().test(new net.minecraft.world.item.ItemStack(Items.DIAMOND)),"legacy mold defaults to one item");
+   check(codec.parse(ops,com.google.gson.JsonParser.parseString("{\"tag\":\"c:ingots/iron\",\"count\":4}")).getOrThrow().test(new net.minecraft.world.item.ItemStack(Items.IRON_INGOT,4)),"legacy KubeJS tag ingredient resolves");
+   check(codec.parse(ops,com.google.gson.JsonParser.parseString("{\"item\":\"minecraft:diamond\",\"count\":0}")).error().isPresent(),"invalid count is rejected");
+   var stamper=com.jerry.mekmm.common.recipe.serializer.MoreMachineRecipeSerializer.stamping(com.jerry.mekmm.api.recipes.basic.BasicStamperRecipe::new).codec().codec().parse(ops,com.google.gson.JsonParser.parseString("{\"input\":{\"item\":\"minecraft:iron_ingot\",\"count\":4},\"mold\":{\"item\":\"minecraft:diamond\"},\"output\":{\"id\":\"minecraft:iron_block\"}}")).getOrThrow();
+   check(stamper.getInput().test(new net.minecraft.world.item.ItemStack(Items.IRON_INGOT,4)),"full legacy KubeJS stamper recipe loads");
+   var presser=com.jerry.mekmm.common.recipe.serializer.MoreMachineRecipeSerializer.pressing(com.jerry.mekmm.api.recipes.basic.BasicPresserRecipe::new).codec().codec().parse(ops,com.google.gson.JsonParser.parseString("{\"primary_input\":{\"item\":\"minecraft:iron_ingot\",\"count\":1},\"secondary_input\":{\"tag\":\"c:ingots/iron\",\"count\":2},\"tertiary_input\":{\"item\":\"minecraft:diamond\",\"count\":1},\"output\":{\"id\":\"minecraft:iron_block\"}}")).getOrThrow();
+   check(presser.getSecondInput().test(new net.minecraft.world.item.ItemStack(Items.IRON_INGOT,2)),"full legacy processor pressing recipe loads");
    var level=e.getServer().overworld();int count=0,extras=0;
    for(var id:BuiltInRegistries.BLOCK.keySet().stream().sorted().toList()) {
     if(!id.getNamespace().equals("mekmm") && !(id.getNamespace().equals("mekanism_extras") && id.getPath().endsWith("_factory")))continue;

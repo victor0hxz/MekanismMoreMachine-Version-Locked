@@ -11,7 +11,7 @@ Requires **Mekanism Version Locked 2.4 or later** for custom ingredient recipe m
 - [Mekanism Version Locked](https://github.com/victor0hxz/Mekanism-Version-Locked/releases/tag/version-locked-2.4)
 - [Mekanism Extras Version Locked](https://github.com/victor0hxz/MekanismExtras-Version-Locked)
 
-See [PORT-ATM11.md](PORT-ATM11.md) for build requirements and [CHANGELOG-2.0.0-port1.md](CHANGELOG-2.0.0-port1.md) for port changes.
+See [PORT-ATM11.md](PORT-ATM11.md) for build requirements and [CHANGELOG-2.0.0-port3.md](CHANGELOG-2.0.0-port3.md) for port changes.
 
 ---
 
