@@ -27,6 +27,8 @@ import mekanism.common.integration.computer.annotation.WrappingComputerMethod;
 import mekanism.common.inventory.container.MekanismContainer;
 import mekanism.common.inventory.container.slot.SlotOverlay;
 import mekanism.common.inventory.container.sync.SyncableDouble;
+import mekanism.common.inventory.container.sync.SyncableInt;
+import mekanism.common.inventory.container.sync.SyncableLong;
 import mekanism.common.inventory.slot.ChemicalInventorySlot;
 import mekanism.common.inventory.slot.EnergyInventorySlot;
 import mekanism.common.tile.interfaces.IBoundingBlock;
@@ -62,6 +64,7 @@ public class TileEntityLargeGasGenerator extends TileEntityMoreMachineGenerator 
     @Nullable
     private ChemicalFuel cachedFuel = null;
     private double gasUsedLastTick;
+    private int energyGeneratedLastTick;
     private double efficiencyMultiplier = 1.0;
     private int numPowering;
 
@@ -103,6 +106,13 @@ public class TileEntityLargeGasGenerator extends TileEntityMoreMachineGenerator 
         energySlot.drainContainerIntoSlot(null);
         fuelSlot.fillTankFromSlot(null);
         gasUsedLastTick = 0;
+        energyGeneratedLastTick = 0;
+        if (!fuelTank.isEmpty()) {
+            cachedFuel = fuelTank.resource().getData(IMekanismDataMapTypes.INSTANCE.chemicalFuel());
+            if (cachedFuel != null) {
+                updateMaxOutputRaw(MathUtils.multiplyClamped((long) cachedFuel.energyDensity(), cachedFuel.maxBurnPerTick()));
+            }
+        }
 
         // updateEfficiency();
 
@@ -122,6 +132,7 @@ public class TileEntityLargeGasGenerator extends TileEntityMoreMachineGenerator 
                         int mbThisTick = Math.ceilDiv(inserted, energyDensity);
                         if (fuelTank.extract(fuel, mbThisTick, transaction, AutomationType.INTERNAL) == mbThisTick) {
                             gasUsedLastTick = mbThisTick;
+                            energyGeneratedLastTick = inserted;
                             transaction.commit();
                         }
                     }
@@ -161,7 +172,8 @@ public class TileEntityLargeGasGenerator extends TileEntityMoreMachineGenerator 
     @Override
     public void addContainerTrackers(MekanismContainer container) {
         super.addContainerTrackers(container);
-        // container.track(SyncableLong.create(this::getGenerationRate, v -> generationRate = v));
+        container.track(SyncableInt.create(() -> energyGeneratedLastTick, v -> energyGeneratedLastTick = v));
+        container.track(SyncableLong.create(this::getMaxOutput, this::updateMaxOutputRaw));
         container.track(SyncableDouble.create(this::getUsed, v -> gasUsedLastTick = v));
         // container.track(SyncableInt.create(this::getMaxBurnTicks, v -> maxBurnTicks = v));
         // container.track(SyncableDouble.create(this::getEfficiencyMultiplier, v -> efficiencyMultiplier = v));
@@ -259,13 +271,10 @@ public class TileEntityLargeGasGenerator extends TileEntityMoreMachineGenerator 
 
     // Methods relating to IComputerTile
     @Override
-    protected long getProductionRate() {
-        // return MathUtils.clampToLong(getGenerationRate() * getUsed() * getMaxBurnTicks());
-        if (cachedFuel == null) {
-            return 0;
-        }
-        return MathUtils.clampToLong(cachedFuel.energyDensity() * getUsed());
+    public long getProductionRate() {
+        return energyGeneratedLastTick;
     }
+
     // End methods IComputerTile
 
     // Implementation of gas tank that on no longer being empty updates the output rate of this generator
