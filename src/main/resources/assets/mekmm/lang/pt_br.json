@@ -692,5 +692,8 @@
 	"mekmm.configuration.section.mekanismmoremachine.generators.toml.title": "Mekanism: MoreMachine - Configuração de Geradores",
 	"mekmm.configuration.title": "Config do Mekanism: MoreMachine",
 
-	"fml.menu.mods.info.description.mekmm": "Adiciona mais máquinas e fábricas ao Mekanism."
+	"fml.menu.mods.info.description.mekmm": "Adiciona mais máquinas e fábricas ao Mekanism.",
+  "item.mekmm.mold_gear": "Molde de Engrenagem",
+  "item.mekmm.mold_plate": "Molde de Placa",
+  "item.mekmm.mold_rod": "Molde de Haste"
 }

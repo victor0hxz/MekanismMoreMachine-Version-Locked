@@ -25,6 +25,15 @@ public class MoreMachineSmoke {
     check(!ingredient.test(new net.minecraft.world.item.ItemStack(Items.DIRT,4)),"ingredient rejects wrong item");
     check(codec.encodeStart(ops,ingredient).getOrThrow().getAsJsonObject().has("ingredient"),"ingredient writes modern format");
    }
+   var moldCodec=com.jerry.mekmm.common.recipe.serializer.CompatibleMoldCodec.CODEC;
+   for(String kind:new String[]{"gear","plate","rod"}) {
+    var mold=BuiltInRegistries.ITEM.getValue(Identifier.parse("mekmm:mold_"+kind));
+    check(mold!=Items.AIR,"fallback mold registered: "+kind);
+    var ingredient=moldCodec.parse(ops,com.google.gson.JsonParser.parseString("{\"item\":\"immersiveengineering:mold_"+kind+"\"}")).getOrThrow();
+    check(ingredient.test(new net.minecraft.world.item.ItemStack(mold)),"missing IE mold resolves to craftable mold: "+kind);
+    check(!ingredient.test(new net.minecraft.world.item.ItemStack(Items.DIRT)),"mold rejects unrelated items: "+kind);
+   }
+   check(moldCodec.parse(ops,com.google.gson.JsonParser.parseString("{\"item\":\"absent_mod:unknown\"}")).error().isPresent(),"unknown molds still fail validation");
    check(codec.parse(ops,com.google.gson.JsonParser.parseString("{\"item\":\"minecraft:diamond\"}")).getOrThrow().test(new net.minecraft.world.item.ItemStack(Items.DIAMOND)),"legacy mold defaults to one item");
    check(codec.parse(ops,com.google.gson.JsonParser.parseString("{\"tag\":\"c:ingots/iron\",\"count\":4}")).getOrThrow().test(new net.minecraft.world.item.ItemStack(Items.IRON_INGOT,4)),"legacy KubeJS tag ingredient resolves");
    check(codec.parse(ops,com.google.gson.JsonParser.parseString("{\"item\":\"minecraft:diamond\",\"count\":0}")).error().isPresent(),"invalid count is rejected");

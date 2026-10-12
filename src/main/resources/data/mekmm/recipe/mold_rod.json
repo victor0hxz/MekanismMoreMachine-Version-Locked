@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "S  ",
+    "S  ",
+    "S  "
+  ],
+  "key": {
+    "S": "#c:ingots/steel"
+  },
+  "result": {
+    "id": "mekmm:mold_rod",
+    "count": 1
+  }
+}

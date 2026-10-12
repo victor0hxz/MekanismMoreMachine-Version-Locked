@@ -32,6 +32,9 @@ public class MoreMachineItems {
     // Rarity.RARE);
 
     public static final ItemRegistryObject<Item> SCRAP = MM_ITEMS.register("scrap");
+    public static final ItemRegistryObject<Item> GEAR_MOLD = MM_ITEMS.register("mold_gear");
+    public static final ItemRegistryObject<Item> PLATE_MOLD = MM_ITEMS.register("mold_plate");
+    public static final ItemRegistryObject<Item> ROD_MOLD = MM_ITEMS.register("mold_rod");
     public static final ItemRegistryObject<Item> SCRAP_BOX = MM_ITEMS.register("scrap_box", Rarity.UNCOMMON);
     public static final ItemRegistryObject<Item> EMPTY_CRYSTAL = MM_ITEMS.register("empty_crystal", Rarity.RARE);
     public static final ItemRegistryObject<Item> UU_MATTER = MM_ITEMS.register("uu_matter", Rarity.EPIC);

@@ -24,7 +24,7 @@ public class MoreMachineRecipeSerializer {
     public static RecipeSerializer<BasicStamperRecipe> stamping(Function3<ItemStackIngredient, ItemStackIngredient, ItemStackTemplate, BasicStamperRecipe> factory) {
         return new RecipeSerializer<>(RecordCodecBuilder.mapCodec(instance -> instance.group(
                 CompatibleItemIngredientCodec.CODEC.fieldOf(SerializationConstants.INPUT).forGetter(StamperRecipe::getInput),
-                CompatibleItemIngredientCodec.CODEC.fieldOf(MoreMachineSerializationConstants.MOLD).forGetter(StamperRecipe::getMold),
+                CompatibleMoldCodec.CODEC.fieldOf(MoreMachineSerializationConstants.MOLD).forGetter(StamperRecipe::getMold),
                 ItemStackTemplate.CODEC.fieldOf(SerializationConstants.OUTPUT).forGetter(BasicStamperRecipe::getOutputRaw)).apply(instance, factory)), StreamCodec.composite(
                         ItemStackIngredient.STREAM_CODEC, BasicStamperRecipe::getInput,
                         ItemStackIngredient.STREAM_CODEC, BasicStamperRecipe::getMold,

@@ -691,5 +691,8 @@
 	"mekmm.configuration.section.mekanismmoremachine.generators.toml.title": "Mekanism: MoreMachine - Generators Config",
 	"mekmm.configuration.title": "Mekanism: MoreMachine Config",
 
-	"fml.menu.mods.info.description.mekmm": "Add more machines and factories to mekanism"
+	"fml.menu.mods.info.description.mekmm": "Add more machines and factories to mekanism",
+  "item.mekmm.mold_gear": "Gear Mold",
+  "item.mekmm.mold_plate": "Plate Mold",
+  "item.mekmm.mold_rod": "Rod Mold"
 }
