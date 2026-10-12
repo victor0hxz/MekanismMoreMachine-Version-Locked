@@ -1,5 +1,5 @@
 <h1>⚙️ Mekanism MoreMachine: Version Locked</h1>
-<p align="center"><img src="https://raw.githubusercontent.com/victor0hxz/MekanismMoreMachine-Version-Locked/main/publication/LOGO-VERSION-LOCKED.png" alt="Mekanism MoreMachine Version Locked" width="360" height="360" style="max-width:100%;height:auto;" /></p>
+<p align="center"><img src="https://raw.githubusercontent.com/victor0hxz/MekanismMoreMachine-Version-Locked/main/publication/BANNER-VERSION-LOCKED.png" alt="Mekanism MoreMachine Version Locked" width="900" style="width:100%;max-width:900px;height:auto;" /></p>
 <p>An unofficial community-made port of <strong>Mekanism MoreMachine</strong> for <strong>Minecraft 26.1.2</strong>.</p>
 <p>Expand your factory with recycling, planting, matter replication, additional processing machines, advanced factories and large generators.</p>
 <h2>⚠️ Unofficial Project</h2>
