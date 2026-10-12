@@ -212,7 +212,7 @@ public class TileEntityLargeElectrolyticSeparator extends TileEntityRecipeMachin
     @NotNull
     @Override
     protected IContainerHolder<IFluidTank> getInitialFluidTanks(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
-        AdjustableFluidTankHelper builder = AdjustableFluidTankHelper.forSide(facingSupplier, side -> side == RelativeSide.BACK || side == RelativeSide.LEFT || side == RelativeSide.RIGHT, _ -> false);
+        AdjustableFluidTankHelper builder = AdjustableFluidTankHelper.forLargeMachine(facingSupplier, side -> side == RelativeSide.BACK || side == RelativeSide.LEFT || side == RelativeSide.RIGHT, _ -> false);
         builder.addTank(fluidTank = BasicFluidTank.input(MAX_FLUID, this::containsRecipe, recipeCacheListener), RelativeSide.BACK, RelativeSide.LEFT, RelativeSide.RIGHT);
         return builder.build();
     }
@@ -220,7 +220,7 @@ public class TileEntityLargeElectrolyticSeparator extends TileEntityRecipeMachin
     @NotNull
     @Override
     public IContainerHolder<IChemicalTank> getInitialChemicalTanks(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
-        AdjustableChemicalTankHelper builder = AdjustableChemicalTankHelper.forSide(facingSupplier, null, side -> side == RelativeSide.FRONT);
+        AdjustableChemicalTankHelper builder = AdjustableChemicalTankHelper.forLargeMachine(facingSupplier, null, side -> side == RelativeSide.FRONT);
         builder.addTank(leftTank = BasicChemicalTank.output(MAX_GAS, recipeCacheUnpauseListener), RelativeSide.FRONT);
         builder.addTank(rightTank = BasicChemicalTank.output(MAX_GAS, recipeCacheUnpauseListener), RelativeSide.FRONT);
         return builder.build();
@@ -230,7 +230,7 @@ public class TileEntityLargeElectrolyticSeparator extends TileEntityRecipeMachin
     @Override
     protected ISingleContainerHolder<IEnergyContainer> getInitialEnergyContainer(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
         energyContainer = FixedUsageEnergyContainer.input(this, BASE_ENERGY_CALCULATOR, recipeCacheUnpauseListener);
-        return new BasicSingleHolder<>(energyContainer, facingSupplier, EnumSet.of(RelativeSide.BACK));
+        return new BasicSingleHolder<>(energyContainer, facingSupplier, com.jerry.mekmm.common.config.MoreMachineConfig.general.largeMachineAllFaces.get() ? EnumSet.allOf(RelativeSide.class) : EnumSet.of(RelativeSide.BACK));
     }
 
     @NotNull
@@ -294,7 +294,7 @@ public class TileEntityLargeElectrolyticSeparator extends TileEntityRecipeMachin
 
     private void handleTank(IChemicalTank tank, GasMode mode) {
         if (!tank.isEmpty() && mode != GasMode.IDLE) {
-            ChemicalUtils.dump(tank, mode, dumpRate, MekanismConfig.general.chemicalAutoEjectRate.get() * 10L);
+            ChemicalUtils.dump(tank, mode, Math.min(tank.amountAsLong(), dumpRate), MekanismConfig.general.chemicalAutoEjectRate.get() * 10L);
         }
     }
 
@@ -477,6 +477,10 @@ public class TileEntityLargeElectrolyticSeparator extends TileEntityRecipeMachin
 
     @Override
     public boolean isOffsetCapabilityDisabled(@NotNull BlockCapability<?, @Nullable Direction> capability, Direction side, @NotNull Vec3i offset) {
+        if (com.jerry.mekmm.common.config.MoreMachineConfig.general.largeMachineAllFaces.get()
+                && (capability == Capabilities.ENERGY.block() || capability == Capabilities.FLUID.block() || capability == Capabilities.CHEMICAL.block())) {
+            return false;
+        }
         if (capability == Capabilities.FLUID.block()) {
             return notFluidPort(side, offset);
         } else if (capability == Capabilities.CHEMICAL.block()) {

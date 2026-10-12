@@ -135,7 +135,7 @@ public class TileEntityLargeAntiprotonicNucleosynthesizer extends TileEntityProg
     @NotNull
     @Override
     public IContainerHolder<IChemicalTank> getInitialChemicalTanks(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
-        AdjustableChemicalTankHelper builder = AdjustableChemicalTankHelper.forSide(facingSupplier, side -> side == RelativeSide.BACK, _ -> false);
+        AdjustableChemicalTankHelper builder = AdjustableChemicalTankHelper.forLargeMachine(facingSupplier, side -> side == RelativeSide.BACK, _ -> false);
         builder.addTank(gasTank = BasicChemicalTank.input(MAX_GAS, (gas, _) -> containsRecipeBA(inputSlot.resource(), gas), this::containsRecipeB, recipeCacheListener), RelativeSide.BACK);
         return builder.build();
     }
@@ -144,7 +144,7 @@ public class TileEntityLargeAntiprotonicNucleosynthesizer extends TileEntityProg
     @Override
     protected ISingleContainerHolder<IEnergyContainer> getInitialEnergyContainer(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
         energyContainer = MachineEnergyContainer.input(this, recipeCacheUnpauseListener);
-        return new BasicSingleHolder<>(energyContainer, facingSupplier, EnumSet.of(RelativeSide.BACK));
+        return new BasicSingleHolder<>(energyContainer, facingSupplier, com.jerry.mekmm.common.config.MoreMachineConfig.general.largeMachineAllFaces.get() ? EnumSet.allOf(RelativeSide.class) : EnumSet.of(RelativeSide.BACK));
     }
 
     @NotNull
@@ -304,6 +304,10 @@ public class TileEntityLargeAntiprotonicNucleosynthesizer extends TileEntityProg
 
     @Override
     public boolean isOffsetCapabilityDisabled(@NotNull BlockCapability<?, @Nullable Direction> capability, Direction side, @NotNull Vec3i offset) {
+        if (com.jerry.mekmm.common.config.MoreMachineConfig.general.largeMachineAllFaces.get()
+                && (capability == Capabilities.ENERGY.block() || capability == Capabilities.FLUID.block() || capability == Capabilities.CHEMICAL.block())) {
+            return false;
+        }
         if (capability == Capabilities.CHEMICAL.block()) {
             return notChemicalPort(side, offset);
         } else if (capability == Capabilities.ENERGY.block()) {

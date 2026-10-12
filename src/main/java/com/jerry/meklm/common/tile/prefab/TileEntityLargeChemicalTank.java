@@ -139,7 +139,7 @@ public class TileEntityLargeChemicalTank<TIER extends ILargeChemicalTankTier> ex
         fillSlot.fillTankFromSlot(null);
         if (dumping != GasMode.IDLE) {
             if (dumping == GasMode.DUMPING) {
-                ChemicalUtils.dump(chemicalTank, dumping, tier.getStorage() / 400);
+                ChemicalUtils.dump(chemicalTank, dumping, Math.min(chemicalTank.amountAsLong(), tier.getStorage() / 400));
             } else {// dumping == GasMode.DUMPING_EXCESS
                 long target = MathUtils.clampToLong(chemicalTank.capacityAsLong(chemicalTank.resource()) * MekanismConfig.general.dumpExcessKeepRatio.get());
                 long stored = chemicalTank.amountAsLong();

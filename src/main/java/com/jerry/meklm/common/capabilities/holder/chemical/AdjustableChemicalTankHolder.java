@@ -21,10 +21,17 @@ import java.util.function.Supplier;
 public class AdjustableChemicalTankHolder extends BasicHolder implements IContainerHolder<IChemicalTank> {
 
     private Map<RelativeSide, List<IChemicalTank>> directionalTanks = Collections.emptyMap();
+    private final boolean allFaces;
     private final List<IChemicalTank> tanks = new ArrayList<>();
 
     AdjustableChemicalTankHolder(Supplier<Direction> facingSupplier, @Nullable Predicate<RelativeSide> insertPredicate, @Nullable Predicate<RelativeSide> extractPredicate) {
-        super(facingSupplier, insertPredicate, extractPredicate);
+        this(facingSupplier, insertPredicate, extractPredicate, false);
+    }
+
+    AdjustableChemicalTankHolder(Supplier<Direction> facingSupplier, @Nullable Predicate<RelativeSide> insertPredicate, @Nullable Predicate<RelativeSide> extractPredicate, boolean allFaces) {
+        super(facingSupplier, side -> allFaces || insertPredicate == null || insertPredicate.test(side),
+                side -> allFaces || extractPredicate == null || extractPredicate.test(side));
+        this.allFaces = allFaces;
     }
 
     void addContainer(IChemicalTank tank) {
@@ -46,7 +53,7 @@ public class AdjustableChemicalTankHolder extends BasicHolder implements IContai
     @NotNull
     @Override
     public List<IChemicalTank> getContainers(@Nullable Direction direction) {
-        if (direction == null || directionalTanks.isEmpty()) {
+        if (allFaces || direction == null || directionalTanks.isEmpty()) {
             return tanks;
         }
         List<IChemicalTank> containers = directionalTanks.get(RelativeSide.fromDirections(facingSupplier.get(), direction));

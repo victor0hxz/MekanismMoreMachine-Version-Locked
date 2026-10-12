@@ -6,6 +6,7 @@ import com.jerry.mekmm.common.util.ValidatorUtils;
 import mekanism.common.config.BaseMekanismConfig;
 import mekanism.common.config.value.CachedConfigValue;
 import mekanism.common.config.value.CachedDoubleValue;
+import mekanism.common.config.value.CachedBooleanValue;
 import mekanism.common.config.value.CachedIntValue;
 import mekanism.common.config.value.CachedLongValue;
 
@@ -19,6 +20,8 @@ import java.util.List;
 public class MoreMachineGeneralConfig extends BaseMekanismConfig {
 
     private final ModConfigSpec configSpec;
+
+    public final CachedBooleanValue largeMachineAllFaces;
 
     // Replicator
     public final CachedConfigValue<List<? extends String>> itemReplicatorRecipe;
@@ -57,6 +60,8 @@ public class MoreMachineGeneralConfig extends BaseMekanismConfig {
 
         gasCollectAmount = CachedIntValue.wrap(this, MoreMachineConfigTranslations.GAS_COLLECT_AMOUNT.applyToBuilder(builder).defineInRange("gasCollectAmount", 1, 1, FluidType.BUCKET_VOLUME));
         wirelessChargingStationChargingRate = CachedLongValue.definePositive(this, builder, MoreMachineConfigTranslations.WIRELESS_CHARGING_STATION_CHARGING_RATE, "wirelessChargingStationChargingRate", 100_000L);
+
+        largeMachineAllFaces = CachedBooleanValue.wrap(this, builder.comment("Allow energy, fluids and chemicals on all parts of large processing machines. Tank input/output rules still apply. Restart required when changing this option.").define("largeMachineAllFaces", true));
 
         configSpec = builder.build();
     }

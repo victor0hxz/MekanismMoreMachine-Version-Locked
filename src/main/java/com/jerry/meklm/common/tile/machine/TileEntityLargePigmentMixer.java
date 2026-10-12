@@ -161,7 +161,7 @@ public class TileEntityLargePigmentMixer extends TileEntityRecipeMachine<Chemica
     @NotNull
     @Override
     public IContainerHolder<IChemicalTank> getInitialChemicalTanks(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
-        AdjustableChemicalTankHelper builder = AdjustableChemicalTankHelper.forSide(facingSupplier, side -> side == RelativeSide.LEFT || side == RelativeSide.RIGHT, side -> side == RelativeSide.FRONT);
+        AdjustableChemicalTankHelper builder = AdjustableChemicalTankHelper.forLargeMachine(facingSupplier, side -> side == RelativeSide.LEFT || side == RelativeSide.RIGHT, side -> side == RelativeSide.FRONT);
         builder.addTank(leftInputTank = BasicChemicalTank.input(MAX_INPUT_PIGMENT, (pigment, _) -> containsRecipe(pigment, rightInputTank.resource()),
                 this::containsRecipe, recipeCacheListener), RelativeSide.LEFT);
         builder.addTank(rightInputTank = BasicChemicalTank.input(MAX_INPUT_PIGMENT, (pigment, _) -> containsRecipe(pigment, leftInputTank.resource()),
@@ -174,7 +174,7 @@ public class TileEntityLargePigmentMixer extends TileEntityRecipeMachine<Chemica
     @Override
     protected ISingleContainerHolder<IEnergyContainer> getInitialEnergyContainer(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
         energyContainer = MachineEnergyContainer.input(this, recipeCacheUnpauseListener);
-        return new BasicSingleHolder<>(energyContainer, facingSupplier, EnumSet.of(RelativeSide.BACK));
+        return new BasicSingleHolder<>(energyContainer, facingSupplier, com.jerry.mekmm.common.config.MoreMachineConfig.general.largeMachineAllFaces.get() ? EnumSet.allOf(RelativeSide.class) : EnumSet.of(RelativeSide.BACK));
     }
 
     @NotNull
@@ -319,6 +319,10 @@ public class TileEntityLargePigmentMixer extends TileEntityRecipeMachine<Chemica
 
     @Override
     public boolean isOffsetCapabilityDisabled(@NotNull BlockCapability<?, @Nullable Direction> capability, Direction side, @NotNull Vec3i offset) {
+        if (com.jerry.mekmm.common.config.MoreMachineConfig.general.largeMachineAllFaces.get()
+                && (capability == Capabilities.ENERGY.block() || capability == Capabilities.FLUID.block() || capability == Capabilities.CHEMICAL.block())) {
+            return false;
+        }
         if (capability == Capabilities.CHEMICAL.block()) {
             return notChemicalPort(side, offset);
         } else if (capability == Capabilities.ENERGY.block()) {

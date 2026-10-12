@@ -57,6 +57,7 @@ public class MoreMachineSmoke {
     var scrap=BuiltInRegistries.ITEM.getValue(Identifier.parse("mekmm:scrap"));int output=0;for(var slot:tile.getInventorySlots())if(slot.resource().value()==scrap)output+=slot.amountAsInt();
     check(output==1,id+" produces exactly one scrap");check(tile.getInventorySlots().stream().noneMatch(slot->slot.resource().value()==Items.DIAMOND && slot.amountAsInt()>0),id+" consumes input once");
    }
+   LargeMachineConnectionSmoke.run(level);
    var slot=mekanism.common.inventory.slot.OutputInventorySlot.at(null,0,0);
    var noDrop=new com.jerry.mekmm.api.recipes.RecyclerRecipe.ChanceOutput(){
     public net.minecraft.world.item.ItemStack getMaxChanceOutput(){return new net.minecraft.world.item.ItemStack(Items.DIAMOND);}

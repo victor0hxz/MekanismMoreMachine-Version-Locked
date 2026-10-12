@@ -143,7 +143,7 @@ public class TileEntityLargeSolarNeutronActivator extends TileEntityRecipeMachin
     @Override
     public IContainerHolder<IChemicalTank> getInitialChemicalTanks(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
         // TODO:计划换成左侧专职输入右侧专职输出
-        AdjustableChemicalTankHelper builder = AdjustableChemicalTankHelper.forSide(facingSupplier, side -> side == RelativeSide.RIGHT || side == RelativeSide.LEFT, side -> side == RelativeSide.BACK);
+        AdjustableChemicalTankHelper builder = AdjustableChemicalTankHelper.forLargeMachine(facingSupplier, side -> side == RelativeSide.RIGHT || side == RelativeSide.LEFT, side -> side == RelativeSide.BACK);
         // Allow extracting out of the input gas tank if it isn't external OR the output tank is empty AND the input is
         // radioactive
         builder.addTank(inputTank = BasicChemicalTank.create(MAX_GAS, MekContainerHelper.radioactiveInputTankPredicate(() -> outputTank),
@@ -385,6 +385,10 @@ public class TileEntityLargeSolarNeutronActivator extends TileEntityRecipeMachin
 
     @Override
     public boolean isOffsetCapabilityDisabled(@NotNull BlockCapability<?, @Nullable Direction> capability, Direction side, @NotNull Vec3i offset) {
+        if (com.jerry.mekmm.common.config.MoreMachineConfig.general.largeMachineAllFaces.get()
+                && (capability == Capabilities.ENERGY.block() || capability == Capabilities.FLUID.block() || capability == Capabilities.CHEMICAL.block())) {
+            return false;
+        }
         if (capability == Capabilities.CHEMICAL.block()) {
             return notChemicalPort(side, offset);
         } else if (capability == Capabilities.ITEM.block()) {

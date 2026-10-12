@@ -44,6 +44,12 @@ public class AdjustableChemicalTankHelper {
         return new AdjustableChemicalTankHelper(new AdjustableChemicalTankHolder(facingSupplier, insertPredicate, extractPredicate));
     }
 
+    public static AdjustableChemicalTankHelper forLargeMachine(Supplier<Direction> facingSupplier, @Nullable Predicate<RelativeSide> insertPredicate,
+            @Nullable Predicate<RelativeSide> extractPredicate) {
+        return new AdjustableChemicalTankHelper(new AdjustableChemicalTankHolder(facingSupplier, insertPredicate, extractPredicate,
+                com.jerry.mekmm.common.config.MoreMachineConfig.general.largeMachineAllFaces.get()));
+    }
+
     public static AdjustableChemicalTankHelper forSideWithConfig(ISideConfiguration sideConfiguration) {
         return new AdjustableChemicalTankHelper(new CanAdjustConfigChemicalTankHolder(sideConfiguration));
     }

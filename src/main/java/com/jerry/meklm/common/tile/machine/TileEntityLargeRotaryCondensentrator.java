@@ -202,7 +202,7 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeMachin
     @NotNull
     @Override
     public IContainerHolder<IChemicalTank> getInitialChemicalTanks(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
-        AdjustableChemicalTankHelper builder = AdjustableChemicalTankHelper.forSide(facingSupplier, side -> side == RelativeSide.BACK, side -> side == RelativeSide.LEFT);
+        AdjustableChemicalTankHelper builder = AdjustableChemicalTankHelper.forLargeMachine(facingSupplier, side -> side == RelativeSide.BACK, side -> side == RelativeSide.LEFT);
         builder.addTank(chemicalTank = BasicChemicalTank.create(CAPACITY, (_, automationType) -> !automationType.isExternal() || mode,
                 (_, automationType) -> automationType.isInternal() || !mode, this::isValidChemical, ChemicalAttributeValidator.ALWAYS_ALLOW,
                 recipeCacheListener), RelativeSide.BACK, RelativeSide.LEFT);
@@ -216,7 +216,7 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeMachin
     @NotNull
     @Override
     protected IContainerHolder<IFluidTank> getInitialFluidTanks(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
-        AdjustableFluidTankHelper builder = AdjustableFluidTankHelper.forSide(facingSupplier, side -> side == RelativeSide.BACK, side -> side == RelativeSide.RIGHT);
+        AdjustableFluidTankHelper builder = AdjustableFluidTankHelper.forLargeMachine(facingSupplier, side -> side == RelativeSide.BACK, side -> side == RelativeSide.RIGHT);
         builder.addTank(fluidTank = BasicFluidTank.create(CAPACITY, (_, automationType) -> !automationType.isExternal() || !mode,
                 (_, automationType) -> automationType.isInternal() || mode, this::isValidFluid, recipeCacheListener), RelativeSide.BACK, RelativeSide.RIGHT);
         return builder.build();
@@ -230,7 +230,7 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeMachin
     @Override
     protected ISingleContainerHolder<IEnergyContainer> getInitialEnergyContainer(IContentsListener listener, IContentsListener recipeCacheListener, IContentsListener recipeCacheUnpauseListener) {
         energyContainer = MachineEnergyContainer.input(this, recipeCacheUnpauseListener);
-        return new BasicSingleHolder<>(energyContainer, facingSupplier, EnumSet.of(RelativeSide.BACK));
+        return new BasicSingleHolder<>(energyContainer, facingSupplier, com.jerry.mekmm.common.config.MoreMachineConfig.general.largeMachineAllFaces.get() ? EnumSet.allOf(RelativeSide.class) : EnumSet.of(RelativeSide.BACK));
     }
 
     @NotNull
@@ -451,6 +451,10 @@ public class TileEntityLargeRotaryCondensentrator extends TileEntityRecipeMachin
 
     @Override
     public boolean isOffsetCapabilityDisabled(@NotNull BlockCapability<?, @Nullable Direction> capability, Direction side, @NotNull Vec3i offset) {
+        if (com.jerry.mekmm.common.config.MoreMachineConfig.general.largeMachineAllFaces.get()
+                && (capability == Capabilities.ENERGY.block() || capability == Capabilities.FLUID.block() || capability == Capabilities.CHEMICAL.block())) {
+            return false;
+        }
         if (capability == Capabilities.CHEMICAL.block()) {
             return notChemicalPort(side, offset);
         } else if (capability == Capabilities.FLUID.block()) {

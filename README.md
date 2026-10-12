@@ -8,6 +8,8 @@
 <p><strong>Requirement:</strong> <a href="https://www.curseforge.com/minecraft/mc-mods/mekanism-version-locked">Mekanism: Version Locked 2.4 or newer</a>. Install matching versions on clients and server.</p>
 <h2>📦 Version Locked</h2>
 <ul><li><strong>Minecraft:</strong> 26.1.2</li><li><strong>Mod loader:</strong> NeoForge</li><li><strong>Project type:</strong> Unofficial community-made port</li><li><strong>Other Minecraft versions:</strong> Not supported by this build</li></ul>
+<h2>🔧 Latest update: 2.0.0-port5</h2>
+<p>Fixes the large chemical tank dumping crash and allows energy, fluids and chemicals on every face of the six large processing machines. Tank rules and rotary modes are preserved. Set <code>largeMachineAllFaces = false</code> in <code>config/MekanismMoreMachine/general.toml</code> and restart to restore the original ports.</p>
 <h2>🐛 Bugs &amp; Compatibility</h2>
 <p>This community port may contain bugs or compatibility issues. Some replication and general-purpose recipes require player configuration, as in the original mod.</p>
 <p><a href="https://github.com/victor0hxz/MekanismMoreMachine-Version-Locked/issues">Report an issue</a></p>
@@ -17,7 +19,7 @@
 <h2>🧪 ATM11 Compatibility</h2>
 <p>Tested for <strong>All the Mods 11 — 0.9.0</strong> with <strong>Mekanism Version Locked 2.4</strong>, <strong>Mekanism Extras 1.4.2-fix5</strong> and Mekanism Additions, Generators and Tools 1.0.</p>
 
-<p><a href="https://www.curseforge.com/minecraft/mc-mods/mekanism-moremachine-version-locked">CurseForge</a> · <a href="CHANGELOG-2.0.0-port4.md">Changelog</a> · <a href="PORT-ATM11.md">Build notes</a></p>
+<p><a href="https://www.curseforge.com/minecraft/mc-mods/mekanism-moremachine-version-locked">CurseForge</a> · <a href="CHANGELOG-2.0.0-port5.md">Changelog</a> · <a href="PORT-ATM11.md">Build notes</a></p>
 
 ---
 

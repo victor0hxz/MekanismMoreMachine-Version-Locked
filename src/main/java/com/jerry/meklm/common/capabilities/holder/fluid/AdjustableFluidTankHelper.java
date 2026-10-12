@@ -31,6 +31,12 @@ public class AdjustableFluidTankHelper {
         return new AdjustableFluidTankHelper(new CanAdjustFluidTankHolder(facingSupplier, insertPredicate, extractPredicate));
     }
 
+    public static AdjustableFluidTankHelper forLargeMachine(Supplier<Direction> facingSupplier, @Nullable Predicate<RelativeSide> insertPredicate,
+            @Nullable Predicate<RelativeSide> extractPredicate) {
+        return new AdjustableFluidTankHelper(new CanAdjustFluidTankHolder(facingSupplier, insertPredicate, extractPredicate,
+                com.jerry.mekmm.common.config.MoreMachineConfig.general.largeMachineAllFaces.get()));
+    }
+
     public static AdjustableFluidTankHelper forSideWithConfig(ISideConfiguration sideConfiguration) {
         return new AdjustableFluidTankHelper(new AdjustableConfigFluidTankHolder(sideConfiguration));
     }
