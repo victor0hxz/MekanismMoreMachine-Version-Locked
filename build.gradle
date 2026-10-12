@@ -82,7 +82,7 @@ lombok {
 }
 
 tasks.named('jar', Jar) {
- archiveFileName = 'mekmm-26.1.2-2.0.0-port4-atm11-0.9.0.jar'
+ archiveFileName = 'mekmm-26.1.2-2.0.0-port5-atm11-0.9.0.jar'
  from('LICENSE') { into 'META-INF'; rename { 'LICENSE-MoreMachine' } }
 }
 
@@ -99,3 +99,4 @@ if (providers.gradleProperty('clientIntegration').isPresent()) {
  neoForge.runs.client.programArguments.addAll '--quickPlayMultiplayer', '127.0.0.1:25567'
 }
 tasks.withType(Test).configureEach { failOnNoDiscoveredTests = false }
+
