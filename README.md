@@ -2,6 +2,8 @@
 
 ![Mekanism MoreMachine Version Locked](publication/LOGO-VERSION-LOCKED.png)
 
+[CurseForge — Mekanism MoreMachine: Version Locked](https://www.curseforge.com/minecraft/mc-mods/mekanism-moremachine-version-locked)
+
 Community compatibility build for Minecraft 26.1.2, NeoForge and ATM11 0.9.0. Original mod by Lost Myself; original MIT license and credits preserved.
 
 This addon uses your installed Mekanism modules. It does not embed or replace them.
