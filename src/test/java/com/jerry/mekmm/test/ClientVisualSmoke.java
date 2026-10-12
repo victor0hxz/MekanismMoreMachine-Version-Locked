@@ -42,6 +42,11 @@ public final class ClientVisualSmoke {
         if (mc.getModelManager().getBlockStateModelSet() == null) return;
         done = true;
         try {
+            var maximum = giselle.jei_mekanism_multiblocks.common.util.TurbineGenerationMath.maxProduction(4046, 224, 28, 7, 345);
+            check(maximum == 55_200_000, "JMM predicts 55.2 MFE/t, matching the tested turbine");
+            check(giselle.jei_mekanism_multiblocks.common.util.TurbineGenerationMath.maxFlow(4046,224,345)==11_040_000, "JMM predicts balanced maximum steam throughput");
+            check(giselle.jei_mekanism_multiblocks.common.util.TurbineGenerationMath.steamCapacity(4046)==258_944_000L, "JMM predicts actual steam capacity");
+            check(giselle.jei_mekanism_multiblocks.common.util.TurbineGenerationMath.energyCapacity(5202,maximum)==220_800_000L, "JMM energy buffer follows actual maximum production");
             var state = MekanismBlocks.STRUCTURAL_GLASS.get().defaultBlockState();
             var model = mc.getModelManager().getBlockStateModelSet().get(state);
             check(model instanceof ConnectedGlassModel, "connected glass custom model registered and baked");

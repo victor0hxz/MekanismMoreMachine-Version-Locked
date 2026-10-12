@@ -21,6 +21,8 @@ final class LargeGasGeneratorSmoke {
         long fuelBefore = tile.fuelTank.amountAsLong();
         TileEntityMekanism.tickServer(level, pos, tile.getBlockState(), tile);
         long generated = tile.getEnergyContainer().getAmountAsLong();
+        MoreMachineSmoke.check(tile.getMaximumBurnRate() == 64L * tile.getCachedFuel().maxBurnPerTick(), "large generator scales fuel throughput 64 times");
+        MoreMachineSmoke.check(generated == Math.min(tile.getEnergyContainer().getCapacityAsLong(), tile.getMaximumBurnRate() * tile.getCachedFuel().energyDensity()), "full-fuel generator reaches its configured maximum power");
         MoreMachineSmoke.check(generated > 0, "large gas generator creates actual energy");
         MoreMachineSmoke.check(tile.getProductionRate() == generated, "gas generator reports FE produced rather than mB burned");
         MoreMachineSmoke.check(tile.getMaxOutput() > 0, "gas generator has a non-zero energy output rate");

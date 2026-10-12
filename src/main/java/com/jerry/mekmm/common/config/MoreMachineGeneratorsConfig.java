@@ -20,6 +20,7 @@ public class MoreMachineGeneratorsConfig extends BaseMekanismConfig {
     public final CachedIntValue largeHeatGenerationFluidRate;
 
     public final CachedLongValue LGBGTankCapacity;
+    public final CachedIntValue largeGasBurnRateMultiplier;
     public final CachedLongValue largeWindGenerationMin;
     public final CachedLongValue largeWindGenerationMax;
     public final CachedLongValue solarHeatGeneration;
@@ -48,6 +49,8 @@ public class MoreMachineGeneratorsConfig extends BaseMekanismConfig {
         MoreMachineConfigTranslations.SERVER_GENERATOR_LARGE_GAS.applyToBuilder(builder).push("gas_generator");
         LGBGTankCapacity = CachedLongValue.wrap(this, MoreMachineConfigTranslations.SERVER_GENERATOR_LARGE_GAS_TANK_CAPACITY.applyToBuilder(builder)
                 .defineInRange("tankCapacity", 180L * FluidType.BUCKET_VOLUME, 1, Long.MAX_VALUE));
+        largeGasBurnRateMultiplier = CachedIntValue.wrap(this, builder.comment("Maximum fuel burn-rate multiplier for the large gas generator. Energy per mB is unchanged; increased power consumes proportionally more fuel. 1 restores the previous rate.")
+                .defineInRange("largeGasBurnRateMultiplier", 64, 1, 1024));
         builder.pop();
 
         MoreMachineConfigTranslations.SERVER_GENERATOR_LARGE_WIND.applyToBuilder(builder).push("large_wind_generator");

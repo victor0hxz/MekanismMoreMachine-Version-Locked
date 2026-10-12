@@ -41,7 +41,21 @@ public class GuiLargeGasGenerator extends GuiMekanismTile<TileEntityLargeGasGene
                     GeneratorsLang.PRODUCING_AMOUNT.translate(EnergyDisplay.of(productionAmount)),
                     MekanismLang.MAX_OUTPUT.translate(EnergyDisplay.of(tile.getMaxOutput())));
         }));
-        addRenderableWidget(new GuiChemicalGauge(() -> tile.fuelTank, tile::getChemicalTanks, GaugeType.WIDE, this, 55, 18));
+        addRenderableWidget(new GuiChemicalGauge(() -> tile.fuelTank, tile::getChemicalTanks, GaugeType.WIDE, this, 55, 18) {
+            @Override
+            protected List<Component> getContentsTooltips(mekanism.api.chemical.ChemicalResource resource, long amount,
+                    net.minecraft.world.item.Item.TooltipContext context, net.minecraft.world.entity.player.Player player,
+                    net.minecraft.world.item.TooltipFlag flags) {
+                var tooltip = super.getContentsTooltips(resource, amount, context, player, flags);
+                var fuel = resource.getData(mekanism.api.datamaps.IMekanismDataMapTypes.INSTANCE.chemicalFuel());
+                if (fuel == null) return tooltip;
+                long rate = MathUtils.multiplyClamped((long) fuel.maxBurnPerTick(),
+                        com.jerry.mekmm.common.config.MoreMachineConfig.generators.largeGasBurnRateMultiplier.get());
+                tooltip.add(Component.translatable("mekmm.large_gas_generator.effective_burn_limit", rate));
+                tooltip.add(Component.translatable("mekmm.large_gas_generator.effective_output_limit", EnergyDisplay.of(tile.getMaxOutput()).getTextComponent()));
+                return tooltip;
+            }
+        });
         addRenderableWidget(new GuiVerticalPowerBar(this, tile.getEnergyContainer(), 164, 15));
     }
 

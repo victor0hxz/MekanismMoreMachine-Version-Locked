@@ -110,7 +110,7 @@ public class TileEntityLargeGasGenerator extends TileEntityMoreMachineGenerator 
         if (!fuelTank.isEmpty()) {
             cachedFuel = fuelTank.resource().getData(IMekanismDataMapTypes.INSTANCE.chemicalFuel());
             if (cachedFuel != null) {
-                updateMaxOutputRaw(MathUtils.multiplyClamped((long) cachedFuel.energyDensity(), cachedFuel.maxBurnPerTick()));
+                updateMaxOutputRaw(Math.min(Integer.MAX_VALUE, MathUtils.multiplyClamped((long) cachedFuel.energyDensity(), getMaximumBurnRate())));
             }
         }
 
@@ -124,7 +124,7 @@ public class TileEntityLargeGasGenerator extends TileEntityMoreMachineGenerator 
 
             // maximum amount that can be produced AND stored
             int energyDensity = cachedFuel.energyDensity();
-            int maxEnergyThisTick = MathUtils.clampToInt((long) energyDensity * Math.min((long) Math.ceil(cachedFuel.maxBurnPerTick() * fullness), fuelTank.amountAsLong()));
+            int maxEnergyThisTick = MathUtils.clampToInt(MathUtils.multiplyClamped((long) energyDensity, Math.min((long) Math.ceil(getMaximumBurnRate() * fullness), fuelTank.amountAsLong())));
             if (maxEnergyThisTick > 0) {
                 try (Transaction transaction = Transaction.open(Transaction.getCurrentOpenedTransaction())) {
                     int inserted = getEnergyContainer().insert(maxEnergyThisTick, transaction, AutomationType.INTERNAL);
@@ -142,6 +142,11 @@ public class TileEntityLargeGasGenerator extends TileEntityMoreMachineGenerator 
 
         setActive(gasUsedLastTick != 0);
         return sendUpdatePacket;
+    }
+
+    public long getMaximumBurnRate() {
+        return cachedFuel == null ? 0 : MathUtils.multiplyClamped((long) cachedFuel.maxBurnPerTick(),
+                MoreMachineConfig.generators.largeGasBurnRateMultiplier.get());
     }
 
     @Override
