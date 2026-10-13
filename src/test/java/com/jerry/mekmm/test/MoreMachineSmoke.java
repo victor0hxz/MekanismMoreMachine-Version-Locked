@@ -57,6 +57,7 @@ public class MoreMachineSmoke {
     var scrap=BuiltInRegistries.ITEM.getValue(Identifier.parse("mekmm:scrap"));int output=0;for(var slot:tile.getInventorySlots())if(slot.resource().value()==scrap)output+=slot.amountAsInt();
     check(output==1,id+" produces exactly one scrap");check(tile.getInventorySlots().stream().noneMatch(slot->slot.resource().value()==Items.DIAMOND && slot.amountAsInt()>0),id+" consumes input once");
    }
+   TierInstallerSmoke.run(level);
    LargeMachineConnectionSmoke.run(level);
    LargeGasGeneratorSmoke.run(level);
    var slot=mekanism.common.inventory.slot.OutputInventorySlot.at(null,0,0);

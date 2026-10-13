@@ -117,6 +117,7 @@ public class Mekmm implements IModModule {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
+        event.enqueueWork(com.jerry.mekmm.common.integration.AdvancedInstallerSupport::initialize);
         // Initialization notification
         LOGGER.info("Version {} initializing...", versionNumber);
         HolidayManager.init();
