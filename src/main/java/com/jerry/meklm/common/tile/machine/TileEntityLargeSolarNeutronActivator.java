@@ -105,7 +105,6 @@ public class TileEntityLargeSolarNeutronActivator extends TileEntityRecipeMachin
 
     @SyntheticComputerMethod(getter = "productionRate")
     private float productionRate;
-    private int baselineMaxOperations = 1;
     private int numPowering;
     private byte seeSunCount = 0;
 
@@ -315,16 +314,9 @@ public class TileEntityLargeSolarNeutronActivator extends TileEntityRecipeMachin
                 .setOnFinish(this::markForSave)
                 // Edge case handling, this should almost always end up being 1
                 .setRequiredTicks(() -> productionRate > 0 && productionRate < 1 ? Mth.ceil(1 / productionRate) : 1)
-                .setBaselineMaxOperations(() -> baselineMaxOperations * (productionRate > 0 && productionRate < 1 ? 1 : (int) productionRate));
+                .setBaselineMaxOperations(() -> com.jerry.meklm.common.util.LargeMachineOperations.multiply(com.jerry.meklm.common.util.LargeMachineOperations.forTile(this, com.jerry.mekmm.common.config.MoreMachineConfig.general.largeSolarBaseOperations.get()), productionRate > 0 && productionRate < 1 ? 1 : productionRate));
     }
 
-    @Override
-    public void recalculateUpgrades(Upgrade upgrade) {
-        super.recalculateUpgrades(upgrade);
-        if (upgrade == Upgrade.SPEED) {
-            baselineMaxOperations = (int) Math.pow(2, getUpgrades(Upgrade.SPEED));
-        }
-    }
 
     @Override
     public int getRedstoneLevel() {
@@ -474,3 +466,5 @@ public class TileEntityLargeSolarNeutronActivator extends TileEntityRecipeMachin
         }
     }
 }
+
+

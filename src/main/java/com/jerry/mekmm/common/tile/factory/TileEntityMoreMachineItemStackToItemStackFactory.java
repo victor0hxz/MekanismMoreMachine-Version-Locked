@@ -106,6 +106,7 @@ public class TileEntityMoreMachineItemStackToItemStackFactory extends TileEntity
                 .setCanHolderFunction(this::canFunction)
                 .setActive(active -> setActiveState(active, cacheIndex))
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
+                .setOperationsCost(com.jerry.mekmm.common.config.MoreMachineConfig.general.batchOperationsCost.get())
                 .setRequiredTicks(this::getTicksRequired)
                 .setOnFinish(this::markForSave)
                 .setOperatingTicksChanged(operatingTicks -> progress[cacheIndex] = operatingTicks)
@@ -118,3 +119,4 @@ public class TileEntityMoreMachineItemStackToItemStackFactory extends TileEntity
         return new MachineUpgradeData(provider, redstone, getControlType(), energyContainer, progress, energySlot, inputSlots, outputSlots, isSorting(), getComponents(), problemPath());
     }
 }
+

@@ -204,6 +204,7 @@ public class TileEntityChemicalReplicator extends TileEntityProgressMachine<MMBa
                 .setCanHolderFunction(this::canFunction)
                 .setActive(this::setActive)
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
+                .setOperationsCost(com.jerry.mekmm.common.config.MoreMachineConfig.general.batchOperationsCost.get())
                 .setRequiredTicks(this::getTicksRequired)
                 .setOnFinish(this::markForSave)
                 .setOperatingTicksChanged(this::setOperatingTicks)
@@ -255,3 +256,4 @@ public class TileEntityChemicalReplicator extends TileEntityProgressMachine<MMBa
     }
     // End methods IComputerTile
 }
+

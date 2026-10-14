@@ -22,6 +22,9 @@ public class MoreMachineGeneralConfig extends BaseMekanismConfig {
     private final ModConfigSpec configSpec;
 
     public final CachedBooleanValue largeMachineAllFaces;
+    public final CachedIntValue largeMachineBaseOperations;
+    public final CachedIntValue largeSolarBaseOperations;
+    public final CachedBooleanValue batchOperationsCost;
 
     // Replicator
     public final CachedConfigValue<List<? extends String>> itemReplicatorRecipe;
@@ -63,6 +66,10 @@ public class MoreMachineGeneralConfig extends BaseMekanismConfig {
 
         largeMachineAllFaces = CachedBooleanValue.wrap(this, builder.comment("Allow energy, fluids and chemicals on all parts of large processing machines. Tank input/output rules still apply. Restart required when changing this option.").define("largeMachineAllFaces", true));
 
+        largeMachineBaseOperations = CachedIntValue.wrap(this, builder.comment("Base parallel recipe operations for large powered machines. Multiplied by the installed Mekanism speed curve; resources and energy limit actual operations. Existing per-machine energy usage entries remain in effect.").defineInRange("largeMachineBaseOperations", 4, 1, 1_000_000));
+        largeSolarBaseOperations = CachedIntValue.wrap(this, builder.comment("Base solar activator operation multiplier before Mekanism speed and available sunlight.").defineInRange("largeSolarBaseOperations", 1, 1, 1_000_000));
+        batchOperationsCost = CachedBooleanValue.wrap(this, builder.comment("Charge configured Mekanism energy per actual parallel operation for MoreMachine machines and factories. True prevents batch operations from being free. False restores legacy batch charging. Restart required after changing.").define("batchOperationsCost", true));
+
         configSpec = builder.build();
     }
 
@@ -86,3 +93,4 @@ public class MoreMachineGeneralConfig extends BaseMekanismConfig {
         return ModConfig.Type.SERVER;
     }
 }
+

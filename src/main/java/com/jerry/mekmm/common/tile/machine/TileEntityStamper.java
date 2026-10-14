@@ -149,6 +149,7 @@ public class TileEntityStamper extends TileEntityProgressMachine<StamperRecipe> 
                 .setCanHolderFunction(this::canFunction)
                 .setActive(this::setActive)
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
+                .setOperationsCost(com.jerry.mekmm.common.config.MoreMachineConfig.general.batchOperationsCost.get())
                 .setRequiredTicks(this::getTicksRequired)
                 .setOnFinish(this::markForSave)
                 .setOperatingTicksChanged(this::setOperatingTicks)
@@ -173,3 +174,4 @@ public class TileEntityStamper extends TileEntityProgressMachine<StamperRecipe> 
     }
     // End methods IComputerTile
 }
+

@@ -107,8 +107,6 @@ public class TileEntityLargeChemicalInfuser extends TileEntityRecipeMachine<Chem
     public IChemicalTank centerTank;
 
     private long clientEnergyUsed = 0L;
-    private int baselineMaxOperations = 1;
-    private int baseOperations = 1;
     private int numPowering;
 
     private final IOutputHandler<@NotNull ChemicalStackTemplate> outputHandler;
@@ -248,19 +246,11 @@ public class TileEntityLargeChemicalInfuser extends TileEntityRecipeMachine<Chem
                 .setCanHolderFunction(this::canFunction)
                 .setActive(this::setActive)
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
-                .setBaselineMaxOperations(() -> baseOperations * baselineMaxOperations)
+                .setOperationsCost(com.jerry.mekmm.common.config.MoreMachineConfig.general.batchOperationsCost.get())
+                .setBaselineMaxOperations(() -> com.jerry.meklm.common.util.LargeMachineOperations.forTile(this, com.jerry.mekmm.common.config.MoreMachineConfig.general.largeMachineBaseOperations.get()))
                 .setOnFinish(this::markForSave);
     }
 
-    @Override
-    public void recalculateUpgrades(Upgrade upgrade) {
-        super.recalculateUpgrades(upgrade);
-        if (upgrade == Upgrade.SPEED) {
-            int upgradeCount = getUpgrades(Upgrade.SPEED);
-            baseOperations = 4 * (upgradeCount > 0 ? upgradeCount : upgradeCount + 1);
-            baselineMaxOperations = (int) Math.pow(2, upgradeCount);
-        }
-    }
 
     @Override
     public void addContainerTrackers(MekanismContainer container) {
@@ -383,3 +373,6 @@ public class TileEntityLargeChemicalInfuser extends TileEntityRecipeMachine<Chem
         return true;
     }
 }
+
+
+

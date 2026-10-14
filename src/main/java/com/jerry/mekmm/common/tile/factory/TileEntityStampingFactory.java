@@ -134,6 +134,7 @@ public class TileEntityStampingFactory extends TileEntityMoreMachineItemToItemFa
                 .setCanHolderFunction(this::canFunction)
                 .setActive(active -> setActiveState(active, cacheIndex))
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
+                .setOperationsCost(com.jerry.mekmm.common.config.MoreMachineConfig.general.batchOperationsCost.get())
                 .setRequiredTicks(this::getTicksRequired)
                 .setOnFinish(this::markForSave)
                 .setOperatingTicksChanged(operatingTicks -> progress[cacheIndex] = operatingTicks)
@@ -158,3 +159,4 @@ public class TileEntityStampingFactory extends TileEntityMoreMachineItemToItemFa
         return new StamperUpgradeData(provider, redstone, getControlType(), energyContainer, progress, energySlot, extraSlot, inputSlots, outputSlots, isSorting(), getComponents(), problemPath());
     }
 }
+

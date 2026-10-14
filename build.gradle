@@ -82,7 +82,7 @@ lombok {
 }
 
 tasks.named('jar', Jar) {
- archiveFileName = 'mekmm-26.1.2-2.0.0-port8-atm11-0.9.0.jar'
+ archiveFileName = 'mekmm-26.1.2-2.0.0-port9-atm11-0.9.0.jar'
  from('LICENSE') { into 'META-INF'; rename { 'LICENSE-MoreMachine' } }
 }
 
@@ -110,3 +110,4 @@ if (providers.gradleProperty('visualSmoke').isPresent()) {
 if (!providers.gradleProperty('visualSmoke').isPresent()) {
  sourceSets.test.java.exclude '**/ClientVisualSmoke.java'
 }
+

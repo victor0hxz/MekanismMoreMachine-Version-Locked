@@ -5,11 +5,12 @@
 <h2>⚠️ Unofficial Project</h2>
 <p>This project is not affiliated with, maintained by, or endorsed by the original Mekanism or MoreMachine development teams.</p>
 <p>Original MoreMachine author: <strong>Lost Myself</strong>. Full credit goes to the original developers and contributors.</p>
-<p><strong>Requirement:</strong> <a href="https://www.curseforge.com/minecraft/mc-mods/mekanism-version-locked">Mekanism: Version Locked 2.4 or newer</a>. Install matching versions on clients and server.</p>
+<p><strong>Requirement:</strong> <a href="https://www.curseforge.com/minecraft/mc-mods/mekanism-version-locked">Mekanism: Version Locked 2.8 or newer</a>. Install matching versions on clients and server.</p>
 <h2>📦 Version Locked</h2>
 <ul><li><strong>Minecraft:</strong> 26.1.2</li><li><strong>Mod loader:</strong> NeoForge</li><li><strong>Project type:</strong> Unofficial community-made port</li><li><strong>Other Minecraft versions:</strong> Not supported by this build</li></ul>
-<h2>🔧 Latest update: 2.0.0-port8</h2>
+<h2>🔧 Latest update: 2.0.0-port9</h2>
 <p>Adds a configurable 64x fuel burn rate to the large gas generator (4.608 MFE/t with ATM11 ethene at full capacity). Corrects the large gas generator energy reading and its zero output limit. Fixes the large chemical tank dumping crash and allows energy, fluids and chemicals on every face of the six large processing machines. Tank rules and rotary modes are preserved. Set <code>largeMachineAllFaces = false</code> in <code>config/MekanismMoreMachine/general.toml</code> and restart to restore the original ports.</p>
+<p>Port9 fixes 128-speed upgrade overflow, follows the installed Mekanism speed curve and charges energy per actual parallel operation. Optional server settings: <code>largeMachineBaseOperations = 4</code>, <code>largeSolarBaseOperations = 1</code>, <code>batchOperationsCost = true</code>. Existing energy usage settings are preserved. See <a href="CHANGELOG-2.0.0-port9.md">port9 changelog</a>.</p>
 <h2>🐛 Bugs &amp; Compatibility</h2>
 <p>This community port may contain bugs or compatibility issues. Some replication and general-purpose recipes require player configuration, as in the original mod.</p>
 <p><a href="https://github.com/victor0hxz/MekanismMoreMachine-Version-Locked/issues">Report an issue</a></p>

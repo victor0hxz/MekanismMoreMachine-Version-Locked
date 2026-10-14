@@ -192,6 +192,7 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalFactor
                 .setCanHolderFunction(this::canFunction)
                 .setActive(active -> setActiveState(active, cacheIndex))
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
+                .setOperationsCost(com.jerry.mekmm.common.config.MoreMachineConfig.general.batchOperationsCost.get())
                 .setBaselineMaxOperations(() -> baselineMaxOperations)
                 .setOnFinish(this::markForSave);
     }
@@ -226,3 +227,4 @@ public class TileEntityWashingFactory extends TileEntityChemicalToChemicalFactor
         fluidTank.setContents(FluidResource.EMPTY, 0, null);
     }
 }
+

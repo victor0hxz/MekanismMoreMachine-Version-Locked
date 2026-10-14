@@ -142,6 +142,7 @@ public class TileEntityRecycler extends TileEntityProgressMachine<RecyclerRecipe
                 .setCanHolderFunction(this::canFunction)
                 .setActive(this::setActive)
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
+                .setOperationsCost(com.jerry.mekmm.common.config.MoreMachineConfig.general.batchOperationsCost.get())
                 .setRequiredTicks(this::getTicksRequired)
                 .setOnFinish(this::markForSave)
                 .setOperatingTicksChanged(this::setOperatingTicks)
@@ -166,3 +167,4 @@ public class TileEntityRecycler extends TileEntityProgressMachine<RecyclerRecipe
     }
     // End methods IComputerTile
 }
+

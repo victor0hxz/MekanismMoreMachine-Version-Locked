@@ -165,9 +165,7 @@ public class TileEntityLargeElectrolyticSeparator extends TileEntityRecipeMachin
     private long clientEnergyUsed = 1L;
     @Getter
     private long recipeEnergyMultiplier = 1L;
-    private int baselineMaxOperations = 1;
     private long dumpRate = BASE_DUMP_RATE;
-    private int baseOperations = 1;
     private FixedUsageEnergyContainer<TileEntityLargeElectrolyticSeparator> energyContainer;
 
     public TileEntityLargeElectrolyticSeparator(BlockPos pos, BlockState state) {
@@ -264,6 +262,7 @@ public class TileEntityLargeElectrolyticSeparator extends TileEntityRecipeMachin
         rightOutputSlot.drainTankIntoSlot(null);
         clientEnergyUsed = recipeCacheLookupMonitor.updateAndProcess(energyContainer);
 
+        dumpRate = (long) BASE_DUMP_RATE * com.jerry.meklm.common.util.LargeMachineOperations.forTile(this, com.jerry.mekmm.common.config.MoreMachineConfig.general.largeMachineBaseOperations.get());
         handleTank(leftTank, dumpLeft);
         handleTank(rightTank, dumpRight);
         handleEject();
@@ -347,21 +346,11 @@ public class TileEntityLargeElectrolyticSeparator extends TileEntityRecipeMachin
                 .setCanHolderFunction(this::canFunction)
                 .setActive(this::setActive)
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
-                .setBaselineMaxOperations(() -> baseOperations * baselineMaxOperations)
+                .setOperationsCost(com.jerry.mekmm.common.config.MoreMachineConfig.general.batchOperationsCost.get())
+                .setBaselineMaxOperations(() -> com.jerry.meklm.common.util.LargeMachineOperations.forTile(this, com.jerry.mekmm.common.config.MoreMachineConfig.general.largeMachineBaseOperations.get()))
                 .setOnFinish(this::markForSave);
     }
 
-    @Override
-    public void recalculateUpgrades(Upgrade upgrade) {
-        super.recalculateUpgrades(upgrade);
-        if (upgrade == Upgrade.SPEED) {
-            int upgradeCount = getUpgrades(Upgrade.SPEED);
-            double speed = Math.pow(2, upgradeCount);
-            baseOperations = 4 * (upgradeCount > 0 ? upgradeCount : upgradeCount + 1);
-            baselineMaxOperations = (int) speed;
-            dumpRate = (long) (BASE_DUMP_RATE * baseOperations * speed);
-        }
-    }
 
     @Override
     public void nextMode(int tank) {
@@ -597,3 +586,6 @@ public class TileEntityLargeElectrolyticSeparator extends TileEntityRecipeMachin
     }
     // End methods IComputerTile
 }
+
+
+

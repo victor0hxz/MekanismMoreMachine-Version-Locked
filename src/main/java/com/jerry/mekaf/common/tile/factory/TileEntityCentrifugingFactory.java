@@ -110,6 +110,7 @@ public class TileEntityCentrifugingFactory extends TileEntityChemicalToChemicalF
                 .setActive(active -> setActiveState(active, cacheIndex))
                 .setOnFinish(this::markForSave)
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
+                .setOperationsCost(com.jerry.mekmm.common.config.MoreMachineConfig.general.batchOperationsCost.get())
                 .setBaselineMaxOperations(() -> baselineMaxOperations);
     }
 
@@ -126,3 +127,4 @@ public class TileEntityCentrifugingFactory extends TileEntityChemicalToChemicalF
                 progress, energySlot, inputChemicalTanks, outputChemicalTanks, isSorting(), getComponents(), problemPath());
     }
 }
+

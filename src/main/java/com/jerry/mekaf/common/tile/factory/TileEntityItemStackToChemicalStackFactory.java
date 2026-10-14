@@ -108,6 +108,7 @@ public class TileEntityItemStackToChemicalStackFactory extends TileEntityItemToC
                 .setCanHolderFunction(this::canFunction)
                 .setActive(active -> setActiveState(active, cacheIndex))
                 .setEnergyRequirements(energyContainer::getEnergyPerTick, energyContainer)
+                .setOperationsCost(com.jerry.mekmm.common.config.MoreMachineConfig.general.batchOperationsCost.get())
                 .setRequiredTicks(this::getTicksRequired)
                 .setOnFinish(this::markForSave)
                 .setOperatingTicksChanged(operatingTicks -> progress[cacheIndex] = operatingTicks)
@@ -120,3 +121,4 @@ public class TileEntityItemStackToChemicalStackFactory extends TileEntityItemToC
                 progress, energySlot, inputItemSlots, outputChemicalTanks, isSorting(), getComponents(), problemPath());
     }
 }
+

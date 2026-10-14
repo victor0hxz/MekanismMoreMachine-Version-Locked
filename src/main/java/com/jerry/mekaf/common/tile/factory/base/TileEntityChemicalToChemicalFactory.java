@@ -168,7 +168,7 @@ public abstract class TileEntityChemicalToChemicalFactory<RECIPE extends Mekanis
     public void recalculateUpgrades(Upgrade upgrade) {
         super.recalculateUpgrades(upgrade);
         if (upgrade == Upgrade.SPEED) {
-            baselineMaxOperations = (int) Math.pow(2, getUpgrades(Upgrade.SPEED));
+            baselineMaxOperations = com.jerry.meklm.common.util.LargeMachineOperations.forTile(this, 1);
         }
     }
 
@@ -427,3 +427,4 @@ public abstract class TileEntityChemicalToChemicalFactory<RECIPE extends Mekanis
         }
     }
 }
+
